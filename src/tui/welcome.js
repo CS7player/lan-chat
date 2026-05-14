@@ -1,5 +1,5 @@
 import blessed from 'blessed';
-import { screen, screenClear, screenExit, screenRefresh } from "../utils/screen.js";
+import { screen, screenClear, screenExit, screenRefresh, addFocusBtn, removeFocusBtn } from "../utils/screen.js";
 import { displayDashboard } from "./layout.js"
 import { color } from '../utils/contants.js';
 
@@ -40,9 +40,11 @@ const yesBtn = blessed.button({
  content: 'YES',
  style: {
   bg: color.green,
+  fg: color.black,
   focus: {
-   bg: color.white,
-   fg: color.black
+   bg: color.purple,
+   fg: color.black,
+   bold: true
   },
   hover: {
    bg: color.purple
@@ -66,9 +68,11 @@ const noBtn = blessed.button({
  content: 'NO',
  style: {
   bg: color.red,
+  fg: color.black,
   focus: {
-   bg: color.white,
-   fg: color.black
+   bg: color.purple,
+   fg: color.black,
+   bold: true
   },
   hover: {
    bg: color.purple
@@ -79,6 +83,8 @@ const noBtn = blessed.button({
 // YES event
 yesBtn.on('press', () => {
  screenClear()
+ removeFocusBtn(yesBtn)
+ removeFocusBtn(noBtn)
  displayDashboard()
 });
 
@@ -87,8 +93,12 @@ noBtn.on('press', () => {
  screenExit();
 });
 
-export const start = () => {
+export const startUI = () => {
  screen.append(welcome_box);
  yesBtn.focus();
+ addFocusBtn({ btn: yesBtn })
+ addFocusBtn({ btn: noBtn })
  screenRefresh();
 }
+
+

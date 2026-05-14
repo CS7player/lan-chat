@@ -1,2 +1,2 @@
-import { start } from "./src/tui/welcome.js";
-start();
+#!/usr/bin/env node
+import "./src/start.js";

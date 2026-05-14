@@ -1,5 +1,5 @@
 import blessed from 'blessed';
-import { screen } from '../utils/screen.js';
+import { screen, addFocusBtn } from '../utils/screen.js';
 import { showDialogBox } from '../utils/dialog.js';
 import { color } from '../utils/contants.js';
 
@@ -56,5 +56,6 @@ exitBtn.on('press', () => {
 });
 
 export const renderHeader = () => {
+ addFocusBtn({ btn: exitBtn })
  screen.append(header);
 }

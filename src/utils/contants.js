@@ -18,3 +18,8 @@ export const users = [
  { id: 5, username: "test005" },
  { id: 6, username: "test006" },
 ]
+
+export const tabsfocus = {
+ btns:[],
+ btnIndex:0
+}

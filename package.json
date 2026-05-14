@@ -5,6 +5,9 @@
  "keywords": [
   "chat"
  ],
+ "bin": {
+  "lan-chat": "./app.js"
+ },
  "license": "MIT",
  "author": "chandra_sekhar",
  "type": "module",
