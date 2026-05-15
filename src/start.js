@@ -11,10 +11,8 @@ console.log("Username:", username);
 
 try {
   console.log("📡 Starting WS Server...");
-
   startWSServer(username, (event) => {
     console.log("WS EVENT:", event);
-
     if (event.type === "USER_JOIN") addUser(event);
     if (event.type === "CHAT") {}
     if (event.type === "PRIVATE_CHAT") {}
@@ -22,12 +20,9 @@ try {
   });
 
   console.log("🔍 Starting Discovery...");
-
   startDiscovery(username, (user) => {
     // console.log("DISCOVERY USER:", user);
-
-    if (user.username === username) return;
-
+    // if (user.username === username) return;
     connectToPeer(user.ip, username, (msg) => {
       console.log("MSG:", msg);
     });

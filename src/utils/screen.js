@@ -13,9 +13,13 @@ screen.key(['escape', 'q', 'C-c'], () => {
 
 export const screenRefresh = () => { screen.render(); }
 export const screenExit = () => {
- screen.destroy();
+ try {
+  screen.destroy();
+ } catch (e) { }
+ process.stdout.write("\x1b[?25h"); // show cursor
+ process.stdout.write("\x1b[0m");   // reset styles
  process.exit(0);
-}
+};
 export const screenClear = () => {
  [...screen.children].forEach(child => child.destroy());
 }

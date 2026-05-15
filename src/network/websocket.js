@@ -5,41 +5,65 @@ import { createAlertBox } from "../tui/alert.js";
 import { clearFocus } from "../utils/screen.js";
 
 export function startWSServer(username, onMessage) {
- const wss = new WebSocketServer({ port: 8080, });
- wss.on("connection", (ws, req) => {
-  const ip = req.socket.remoteAddress;
-  ws.on("message", (raw) => {
-   try {
-    const data = JSON.parse(raw.toString());
-    // USER INTRO
-    if (data.type === "INTRO") {
-     addPeer(ip, { ws, username: data.username, hostname: data.hostname });
-     onMessage({ type: "USER_JOIN", username: data.username, ip });
-     return;
-    }
-    if (data.type === "PRIVATE_CHAT") {
-     onMessage(data);
-     return;
-    }
-    // CHAT MESSAGE
-    if (data.type === "CHAT") {
-     onMessage(data);
-     // broadcast
-     for (const [, peer] of getPeers()) {
-      peer.ws.send(JSON.stringify(data));
-     }
-    }
-   } catch (err) {
-    console.log(err);
-   }
+ console.log("🔥 startWSServer CALLED");
+
+ try {
+  const wss = new WebSocketServer({ port: 8080 });
+
+  wss.on("listening", () => {
+   console.log("✅ WS LISTENING on 8080");
   });
 
-  ws.on("close", () => {
-   removePeer(ip);
-   onMessage({ type: "USER_LEAVE", ip });
+  wss.on("error", (err) => {
+   console.error("❌ WS ERROR:", err);
   });
- });
- console.log("WS running on 8080");
+
+  wss.on("connection", (ws, req) => {
+   const ip = req.socket.remoteAddress;
+   console.log("🔗 Connection:", ip);
+
+   ws.on("message", (raw) => {
+    try {
+     const data = JSON.parse(raw.toString());
+
+     if (data.type === "INTRO") {
+      addPeer(ip, {
+       ws,
+       username: data.username,
+       hostname: data.hostname,
+      });
+
+      onMessage({ type: "USER_JOIN", username: data.username, ip });
+      return;
+     }
+
+     if (data.type === "CHAT") {
+      onMessage(data);
+
+      for (const [, peer] of getPeers()) {
+       peer.ws.send(JSON.stringify(data));
+      }
+     }
+
+     if (data.type === "PRIVATE_CHAT") {
+      onMessage(data);
+     }
+
+    } catch (e) {
+     console.error("❌ MESSAGE ERROR:", e);
+    }
+   });
+
+   ws.on("close", () => {
+    console.log("❌ disconnected:", ip);
+    removePeer(ip);
+    onMessage({ type: "USER_LEAVE", ip });
+   });
+  });
+
+ } catch (err) {
+  console.error("❌ START ERROR:", err);
+ }
 }
 
 export function connectToPeer(ip, username, hostname, onMessage) {
