@@ -71,7 +71,12 @@ export function connectToPeer(ip, username, hostname, onMessage) {
  const ws = new WebSocket(`ws://${ip}:8080`);
  ws.on("open", () => {
   addPeer(ip, { ws, username: "unknown", hostname: "unknown" });
-  ws.send(JSON.stringify({ type: "INTRO", username, hostname }));
+
+  ws.send(JSON.stringify({
+   type: "INTRO",
+   username,
+   hostname
+  }));
  });
 
  ws.on("message", (raw) => {
