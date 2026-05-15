@@ -1,5 +1,5 @@
 import dgram from "dgram";
-import os from "os";
+import * as os from "node:os";
 
 const PORT = 41234;
 const socket = dgram.createSocket("udp4");

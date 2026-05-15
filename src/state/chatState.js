@@ -1,4 +1,4 @@
-import os from "os";
+import * as os from "node:os";
 import { loadUsers } from "../tui/side-bar.js";
 import { renderMessage } from "../tui/content.js";
 import { sendPrivateMessage } from "../network/websocket.js";

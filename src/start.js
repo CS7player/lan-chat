@@ -1,36 +1,41 @@
-import os from "os";
+import * as os from "node:os";
 import { startWSServer, connectToPeer } from "./network/websocket.js";
 import { startDiscovery } from "./network/discovery.js";
 import { startUI } from "./tui/welcome.js";
 import { addUser, removeUser } from "./state/chatState.js";
+
 const username = os.userInfo().username;
 
-/* -START WS SERVER-*/
-startWSServer(username, (event) => {
- if (event.type == "USER_JOIN") {
-  addUser(event);
- }
- if (event.type == "CHAT") {
+console.log("🚀 App starting...");
+console.log("Username:", username);
 
- }
- if (event.type == "PRIVATE_CHAT") {
-  const userObj = { username: event['from'] }
-  addMessage(userObj, event)
- }
- if (event.type == "USER_LEAVE") {
-  removeUser(event)
- }
- // later connect to UI updates here
-});
+try {
+  console.log("📡 Starting WS Server...");
 
-/* -START DISCOVERY-*/
-startDiscovery(username, (user) => {
- if (user.username === username) return;
- connectToPeer(user.ip, username, (msg) => {
-  console.log("MSG:", msg);
-  // later send to UI
- });
-});
+  startWSServer(username, (event) => {
+    console.log("WS EVENT:", event);
 
-/* -START UI LAST-*/
-startUI();
+    if (event.type === "USER_JOIN") addUser(event);
+    if (event.type === "CHAT") {}
+    if (event.type === "PRIVATE_CHAT") {}
+    if (event.type === "USER_LEAVE") removeUser(event);
+  });
+
+  console.log("🔍 Starting Discovery...");
+
+  startDiscovery(username, (user) => {
+    // console.log("DISCOVERY USER:", user);
+
+    if (user.username === username) return;
+
+    connectToPeer(user.ip, username, (msg) => {
+      console.log("MSG:", msg);
+    });
+  });
+
+  console.log("🖥 UI starting...");
+  startUI();
+
+} catch (e) {
+  console.error("❌ Fatal error:", e);
+}

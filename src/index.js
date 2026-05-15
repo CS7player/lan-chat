@@ -1,4 +1,4 @@
-import os from "os";
+import * as os from "node:os";
 
 import { startDiscovery } from "./network/discovery.js";
 import { startWSServer, connectToPeer, sendMessage, } from "./network/websocket.js";
