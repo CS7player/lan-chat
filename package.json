@@ -1,5 +1,5 @@
 {
- "name": "chat",
+ "name": "@cs7player/chat",
  "version": "1.0.0",
  "description": "to communicate in terminal",
  "keywords": [
@@ -9,12 +9,23 @@
   "lan-chat": "./app.js"
  },
  "license": "MIT",
- "author": "chandra_sekhar",
+ "author": {
+  "name": "s.h.chandra sekhar",
+  "email": "s.chandrasekhar.h@gmail.com"
+ },
  "type": "module",
  "main": "app.js",
  "scripts": {
   "test": "echo \"Error: no test specified\" && exit 1"
  },
+   "homepage": "https://github.com/CS7player/lan-chat#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CS7player/lan-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CS7player/lan-chat/issues"
+  },
  "dependencies": {
   "blessed": "^0.1.81",
   "chalk": "^5.6.2",

@@ -1,34 +1,36 @@
 import os from "os";
-
 import { startWSServer, connectToPeer } from "./network/websocket.js";
 import { startDiscovery } from "./network/discovery.js";
-import { startUI } from "./tui/welcome.js"; // we will modify this
-
+import { startUI } from "./tui/welcome.js";
+import { addUser, removeUser } from "./state/chatState.js";
 const username = os.userInfo().username;
 
-/* -------------------------
-   1. START WS SERVER
---------------------------*/
+/* -START WS SERVER-*/
 startWSServer(username, (event) => {
-  console.log("WS EVENT:", event);
+ if (event.type == "USER_JOIN") {
+  addUser(event);
+ }
+ if (event.type == "CHAT") {
 
-  // later connect to UI updates here
+ }
+ if (event.type == "PRIVATE_CHAT") {
+  const userObj = { username: event['from'] }
+  addMessage(userObj, event)
+ }
+ if (event.type == "USER_LEAVE") {
+  removeUser(event)
+ }
+ // later connect to UI updates here
 });
 
-/* -------------------------
-   2. START DISCOVERY
---------------------------*/
+/* -START DISCOVERY-*/
 startDiscovery(username, (user) => {
-  if (user.username === username) return;
-
-  connectToPeer(user.ip, username, (msg) => {
-    console.log("MSG:", msg);
-
-    // later send to UI
-  });
+ if (user.username === username) return;
+ connectToPeer(user.ip, username, (msg) => {
+  console.log("MSG:", msg);
+  // later send to UI
+ });
 });
 
-/* -------------------------
-   3. START UI LAST
---------------------------*/
+/* -START UI LAST-*/
 startUI();

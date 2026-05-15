@@ -1,5 +1,5 @@
 import blessed from 'blessed';
-import { screen, screenRefresh, addFocusBtn, removeFocusBtn } from './screen.js';
+import { screen, screenRefresh, addFocusBtn, removeFocusBtn, screenExit } from './screen.js';
 import { color } from './contants.js';
 
 const dialogBox = blessed.box({
@@ -13,9 +13,7 @@ const dialogBox = blessed.box({
  style: {
   fg: color.white,
   bg: color.black,
-  border: {
-   fg: color.yellow
-  }
+  border: { fg: color.yellow }
  },
  hidden: true
 });
@@ -41,7 +39,8 @@ const okBtn = blessed.button({
  style: {
   fg: color.white,
   bg: color.red,
-  focus: { bg: color.purple }
+  focus: { bg: color.purple },
+  hover: { bg: color.purple }
  }
 });
 
@@ -55,7 +54,8 @@ const noBtn = blessed.button({
  style: {
   fg: color.black,
   bg: color.green,
-  focus: { bg: color.purple }
+  focus: { bg: color.purple },
+  hover: { bg: color.purple }
  }
 });
 
@@ -64,14 +64,15 @@ okBtn.on('press', () => {
  removeFocusBtn(okBtn);
  removeFocusBtn(noBtn);
  screen.remove(dialogBox);
+ screenExit()
  disableModalMode();
  screenRefresh();
 });
 
 noBtn.on('press', () => {
  dialogBox.hide();
- removeFocusBtn(okBtn);
- removeFocusBtn(noBtn);
+ removeFocusBtn(5);
+ removeFocusBtn(6);
  screen.remove(dialogBox);
  disableModalMode();
  screenRefresh();
@@ -79,8 +80,8 @@ noBtn.on('press', () => {
 
 export function showDialogBox() {
  screen.append(dialogBox)
- addFocusBtn({ btn: okBtn })
- addFocusBtn({ btn: noBtn })
+ addFocusBtn({ id: 5, btn: okBtn })
+ addFocusBtn({ id: 6, btn: noBtn })
  dialogBox.show();
  enableModalMode();
  dialogBox.focus();

@@ -2,6 +2,7 @@ import blessed from 'blessed';
 import { screen, addFocusBtn } from '../utils/screen.js';
 import { showDialogBox } from '../utils/dialog.js';
 import { color } from '../utils/contants.js';
+import { clearFocus } from "../utils/screen.js";
 
 // HEADER
 const header = blessed.box({
@@ -14,7 +15,6 @@ const header = blessed.box({
  }
 });
 
-// ✅ Title (centered properly)
 const title = blessed.text({
  parent: header,
  top: 0,
@@ -22,7 +22,7 @@ const title = blessed.text({
  width: 'shrink',
  height: 1,
  align: 'center',
- content: 'My TUI Application',
+ content: 'cHat TUI',
  style: {
   fg: color.yellow,
   bg: color.green,
@@ -30,7 +30,7 @@ const title = blessed.text({
  }
 });
 
-// ✅ Exit button (aligned right, no fractional top)
+// Exit button 
 const exitBtn = blessed.button({
  parent: header,
  content: ' X ',
@@ -42,20 +42,19 @@ const exitBtn = blessed.button({
  keys: true,
  style: {
   fg: color.white, bg: color.red,
-  // normal state explicitly locked
   focus: { fg: color.white, bg: color.purple },
   hover: { fg: color.white, bg: color.purple },
-  // important: ensures reset consistency
   active: { fg: color.white, bg: color.red }
  }
 });
 
 exitBtn.on('press', () => {
+ clearFocus();
  showDialogBox();
  screen.render();
 });
 
 export const renderHeader = () => {
- addFocusBtn({ btn: exitBtn })
+ addFocusBtn({ id: 4, btn: exitBtn })
  screen.append(header);
 }

@@ -83,8 +83,8 @@ const noBtn = blessed.button({
 // YES event
 yesBtn.on('press', () => {
  screenClear()
- removeFocusBtn(yesBtn)
- removeFocusBtn(noBtn)
+ removeFocusBtn(1)
+ removeFocusBtn(2)
  displayDashboard()
 });
 
@@ -96,8 +96,8 @@ noBtn.on('press', () => {
 export const startUI = () => {
  screen.append(welcome_box);
  yesBtn.focus();
- addFocusBtn({ btn: yesBtn })
- addFocusBtn({ btn: noBtn })
+ addFocusBtn({ id: 1, btn: yesBtn })
+ addFocusBtn({ id: 2, btn: noBtn })
  screenRefresh();
 }
 

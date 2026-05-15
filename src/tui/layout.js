@@ -6,7 +6,7 @@ import { screenRefresh } from '../utils/screen.js';
 export const displayDashboard = () => {
  renderHeader();
  renderSideBar();
- renderContent();
+ renderContent(" Chat ");
  screenRefresh();
 }
 
