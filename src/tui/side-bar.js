@@ -103,6 +103,8 @@ const isSidebarFocused = () => {
  let node = screen.focused;
  while (node) {
   if (node === sidebar) {
+   if (chatState.users.length == 0)
+    return false;
    return true;
   }
   node = node.parent;

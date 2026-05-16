@@ -16,10 +16,6 @@ export function addUser(user) {
 }
 
 export function removeUser(username) {
- if (chatState.selectedUser.username == username) {
-  chatState.selectedUser = null
-  renderContent("no user selected!")
- }
  chatState.users = chatState.users.filter(user => user.username !== username);
  loadUsers()
 }
@@ -37,7 +33,9 @@ export function addMessage(user, msg) {
   chatState.messages[key] = [];
  }
  chatState.messages[key].push(msg);
- renderMessage(msg);
+ if (chatState.selectedUser.username == msg.from) {
+  renderMessage(msg);
+ }
 }
 
 export function sendMessage(user, msg) {
