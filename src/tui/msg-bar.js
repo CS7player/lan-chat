@@ -26,7 +26,7 @@ const inputBar = blessed.box({
 });
 
 /* -INPUT BOX-*/
-const inputBox = blessed.textbox({
+export const inputBox = blessed.textbox({
  parent: inputBar,
  left: 0,
  top: 0,
@@ -68,32 +68,36 @@ const sendButton = blessed.button({
 
 /* -SEND MESSAGE HANDLER-*/
 const handleSend = () => {
- inputBox.cancel();
- const text = inputBox.getValue().trim();
- if (!text) {
-  clearFocus();
-  // createAlertBox("NO Text is Entered!");
-  return;
+ try {
+  // inputBox.cancel();
+  const text = inputBox.getValue().trim();
+  if (!text) {
+   clearFocus();
+   createAlertBox("NO Text is Entered!");
+   return;
+  }
+  const user = chatState.selectedUser;
+  if (!user) {
+   clearFocus();
+   createAlertBox("NO User is Selected!");
+   return;
+  }
+  sendMessage(user, text);
+  inputBox.clearValue();
+ } catch (err) {
+  console.log(err)
  }
- const user = chatState.selectedUser;
- if (!user) {
-  clearFocus();
-  createAlertBox("NO User is Selected!");
-  return;
- }
- sendMessage(user, text);
- inputBox.clearValue();
 };
 
 /* -EVENTS-*/
 sendButton.on("press", handleSend);
+
 inputBox.on('click', () => {
  inputBox.focus();
- inputBox.readInput(() => { });
+ screen.render();
 });
 inputBox.on('submit', handleSend);
 inputBox.key('tab', () => {
- inputBox.cancel();
  clearFocus();
  return false;
 });

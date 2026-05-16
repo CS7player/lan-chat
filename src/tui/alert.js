@@ -1,6 +1,6 @@
 import blessed from "blessed";
 import { screen, screenRefresh, addFocusBtn, removeFocusBtn } from "../utils/screen.js";
-import { color } from "../utils/contants.js";
+import { color, tabsfocus } from "../utils/contants.js";
 /**
  * Creates a simple alert modal with OK button
  * @param {string} message
@@ -83,14 +83,16 @@ export const createAlertBox = (
  });
 
  // add to focus system
- addFocusBtn({ id: 99, btn: okBtn });
-
  okBtn.focus();
+ addFocusBtn({ id: 99, btn: okBtn });
+ tabsfocus.btnIndex = tabsfocus.btns.findIndex(b => b.id === 99);
+ tabsfocus.istoggle = false;
 
  const closeAlert = () => {
-  removeFocusBtn(99);
+  tabsfocus.istoggle = true;
   overlay.destroy();
   if (onClose && typeof onClose === 'function') { onClose(); }
+  removeFocusBtn(99);
   screenRefresh();
  };
 

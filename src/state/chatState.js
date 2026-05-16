@@ -17,6 +17,7 @@ export function addUser(user) {
 
 export function removeUser(username) {
  chatState.users = chatState.users.filter(user => user.username !== username);
+ renderContent("no user Selected!!");
  loadUsers()
 }
 

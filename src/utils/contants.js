@@ -11,6 +11,7 @@ export const color = {
 };
 
 export const tabsfocus = {
- btns:[],
- btnIndex:0
+ btns: [],
+ btnIndex: 0,
+ istoggle: true
 }

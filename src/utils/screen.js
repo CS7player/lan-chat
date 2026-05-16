@@ -7,7 +7,7 @@ export const screen = blessed.screen({
  title: "Chat TUI"
 })
 
-screen.key(['escape', 'q', 'C-c'], () => {
+screen.key(['escape', 'C-c'], () => {
  screenExit();
 });
 
@@ -45,11 +45,15 @@ export const focusButton = (index) => {
  const item = tabsfocus.btns[safeIndex];
  if (!item || !item.btn) return;
  item.btn.focus();
+ if (item.btn.readInput) {
+  item.btn.readInput();
+ }
  screenRefresh();
 };
 
 // TAB key
 screen.key(['tab'], () => {
+ if (!tabsfocus.istoggle) return;
  if (!tabsfocus.btns.length) return;
  tabsfocus.btnIndex = (tabsfocus.btnIndex + 1) % tabsfocus.btns.length;
  focusButton(tabsfocus.btnIndex);
