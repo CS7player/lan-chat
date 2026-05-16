@@ -12,7 +12,7 @@ console.log("Username:", username);
 try {
   console.log("📡 Starting WS Server...");
   startWSServer(username, (event) => {
-    console.log("WS EVENT:", event);
+    // console.log("WS EVENT:", event);
     if (event.type === "USER_JOIN") addUser(event);
     if (event.type === "CHAT") {}
     if (event.type === "PRIVATE_CHAT") {}
