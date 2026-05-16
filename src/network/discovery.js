@@ -4,11 +4,11 @@ import * as os from "os";
 const PORT = 41234;
 const socket = dgram.createSocket("udp4");
 
-function ipToInt(ip) {
+const ipToInt = (ip) => {
  return ip.split(".").reduce((acc, p) => (acc << 8) + Number(p), 0) >>> 0;
 }
 
-function intToIp(int) {
+const intToIp = (int) => {
  return [
   (int >>> 24) & 255,
   (int >>> 16) & 255,
@@ -17,7 +17,7 @@ function intToIp(int) {
  ].join(".");
 }
 
-function getBroadcastIp(netObj) {
+const getBroadcastIp = (netObj) => {
  if (!netObj?.address || !netObj?.netmask) return null;
  const ipInt = ipToInt(netObj.address);
  const maskInt = ipToInt(netObj.netmask);
@@ -26,7 +26,7 @@ function getBroadcastIp(netObj) {
  return intToIp(broadcast);
 }
 
-export function getRealLANIP() {
+export const getRealLANIP = () => {
  const nets = os.networkInterfaces();
  let fallback = null;
  for (const name of Object.keys(nets)) {
@@ -46,7 +46,7 @@ export function getRealLANIP() {
  return fallback || null;
 }
 
-export function startDiscovery(username, onUserFound) {
+export const startDiscovery = (username, onUserFound) => {
  socket.bind(PORT, () => {
   socket.setBroadcast(true);
   const interval = setInterval(() => {
@@ -88,7 +88,7 @@ export function startDiscovery(username, onUserFound) {
    }
   } catch (err) {
    // ignore invalid packets
-   console.log(123, err);
+   console.log(err);
   }
  });
 }

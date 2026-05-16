@@ -1,6 +1,6 @@
 import * as os from "node:os";
 import { loadUsers } from "../tui/side-bar.js";
-import { renderMessage } from "../tui/content.js";
+import { renderMessage, renderContent } from "../tui/content.js";
 import { sendPrivateMessage } from "../network/websocket.js";
 
 export const chatState = {
@@ -16,6 +16,10 @@ export function addUser(user) {
 }
 
 export function removeUser(username) {
+ if (chatState.selectedUser.username == username) {
+  chatState.selectedUser = null
+  renderContent("no user selected!")
+ }
  chatState.users = chatState.users.filter(user => user.username !== username);
  loadUsers()
 }

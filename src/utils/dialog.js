@@ -82,6 +82,7 @@ export function showDialogBox() {
  screen.append(dialogBox)
  addFocusBtn({ id: 5, btn: okBtn })
  addFocusBtn({ id: 6, btn: noBtn })
+ okBtn.focus();
  dialogBox.show();
  enableModalMode();
  dialogBox.focus();

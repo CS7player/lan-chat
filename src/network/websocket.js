@@ -2,11 +2,10 @@ import WebSocket, { WebSocketServer } from "ws";
 import { addMessage, chatState, removeUser, addUser } from "../state/chatState.js";
 import { addPeer, removePeer, hasPeer, getPeers } from "./peers.js";
 import { createAlertBox } from "../tui/alert.js";
-import { clearFocus } from "../utils/screen.js";
+import { clearFocus, screenExit } from "../utils/screen.js";
 import { startUI } from "../tui/welcome.js";
 
-export function startWSServer(username) {
-
+export const startWSServer = (username) => {
  try {
   const wss = new WebSocketServer({ port: 8080 });
   wss.on("listening", () => {
@@ -39,6 +38,7 @@ export function startWSServer(username) {
      }
     } catch (e) {
      console.error("❌ MESSAGE ERROR:", e);
+     screenExit();
     }
    });
 
@@ -51,10 +51,11 @@ export function startWSServer(username) {
 
  } catch (err) {
   console.error("❌ START ERROR:", err);
+  screenExit();
  }
 }
 
-export function connectToPeer(ip, username) {
+export const connectToPeer = (ip, username) => {
  if (hasPeer(ip)) return;
  const ws = new WebSocket(`ws://${ip}:8080`);
  ws.on("open", () => {
@@ -77,7 +78,7 @@ export function connectToPeer(ip, username) {
  ws.on("close", () => { removePeer(ip); });
 }
 
-export function sendMessage(username, message) {
+export const sendMessage = (username, message) => {
  const payload = JSON.stringify({
   type: "CHAT",
   from: username,
@@ -90,7 +91,7 @@ export function sendMessage(username, message) {
 }
 
 // send to specific peer
-export function sendPrivateMessage(toIp, username, message) {
+export const sendPrivateMessage = (toIp, username, message) => {
  const peer = getPeers().get(toIp);
  if (!peer) {
   clearFocus();

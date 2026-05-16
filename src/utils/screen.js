@@ -3,7 +3,7 @@ import { tabsfocus } from '../utils/contants.js';
 
 export const screen = blessed.screen({
  smartCSR: true,
- mouse: false,
+ mouse: true,
  title: "Chat TUI"
 })
 
