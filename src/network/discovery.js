@@ -21,7 +21,7 @@ export function startDiscovery(username, onUserFound) {
     0,
     message.length,
     PORT,
-    "255.255.255.255"
+    "192.168.1.255"
    );
   }, 3000);
  });

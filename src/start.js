@@ -21,7 +21,7 @@ try {
 
   console.log("🔍 Starting Discovery...");
   startDiscovery(username, (user) => {
-    // console.log("DISCOVERY USER:", user);
+    console.log("DISCOVERY USER:", user);
     // if (user.username === username) return;
     connectToPeer(user.ip, username, (msg) => {
       console.log("MSG:", msg);
@@ -29,7 +29,7 @@ try {
   });
 
   console.log("🖥 UI starting...");
-  startUI();
+  // startUI();
 
 } catch (e) {
   console.error("❌ Fatal error:", e);
