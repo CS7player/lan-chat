@@ -15,7 +15,8 @@ export function addUser(user) {
  loadUsers()
 }
 
-export function removeUser(user) {
+export function removeUser(username) {
+ chatState.users = chatState.users.filter(user => user.username !== username);
  loadUsers()
 }
 

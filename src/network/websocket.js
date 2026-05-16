@@ -1,17 +1,15 @@
 import WebSocket, { WebSocketServer } from "ws";
-import { addMessage, chatState } from "../state/chatState.js";
+import { addMessage, chatState, removeUser } from "../state/chatState.js";
 import { addPeer, removePeer, hasPeer, getPeers } from "./peers.js";
 import { createAlertBox } from "../tui/alert.js";
 import { clearFocus } from "../utils/screen.js";
 
 export function startWSServer(username, onMessage) {
- console.log("🔥 startWSServer CALLED");
 
  try {
   const wss = new WebSocketServer({ port: 8080 });
-
   wss.on("listening", () => {
-   console.log("✅ WS LISTENING on 8080");
+   console.log("WS LISTENING on 8080");
   });
 
   wss.on("error", (err) => {
@@ -20,7 +18,7 @@ export function startWSServer(username, onMessage) {
 
   wss.on("connection", (ws, req) => {
    const ip = req.socket.remoteAddress;
-   console.log("🔗 Connection:", ip);
+   // console.log("🔗 Connection:", ip);
 
    ws.on("message", (raw) => {
     try {
@@ -55,7 +53,9 @@ export function startWSServer(username, onMessage) {
    });
 
    ws.on("close", () => {
-    console.log("❌ disconnected:", ip);
+    // console.log("❌ disconnected:", ip);
+    const peer = getPeers().get(ip);
+    removeUser(peer?.username)
     removePeer(ip);
     onMessage({ type: "USER_LEAVE", ip });
    });

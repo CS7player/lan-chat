@@ -90,6 +90,7 @@ export const loadUsers = () => {
  loader.show();
  stopLoader()
  renderUsers(chatState.users, handleUserClick);
+ screen.render();
 }
 
 export const renderSideBar = () => {
