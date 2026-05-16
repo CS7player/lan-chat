@@ -1,63 +1,51 @@
 import WebSocket, { WebSocketServer } from "ws";
-import { addMessage, chatState, removeUser } from "../state/chatState.js";
+import { addMessage, chatState, removeUser, addUser } from "../state/chatState.js";
 import { addPeer, removePeer, hasPeer, getPeers } from "./peers.js";
 import { createAlertBox } from "../tui/alert.js";
 import { clearFocus } from "../utils/screen.js";
+import { startUI } from "../tui/welcome.js";
 
-export function startWSServer(username, onMessage) {
+export function startWSServer(username) {
 
  try {
   const wss = new WebSocketServer({ port: 8080 });
   wss.on("listening", () => {
    console.log("WS LISTENING on 8080");
+   startUI();
   });
-
   wss.on("error", (err) => {
-   console.error("❌ WS ERROR:", err);
+   console.error("WS failed:", err);
   });
-
   wss.on("connection", (ws, req) => {
    const ip = req.socket.remoteAddress;
-   // console.log("🔗 Connection:", ip);
-
    ws.on("message", (raw) => {
     try {
      const data = JSON.parse(raw.toString());
-
      if (data.type === "INTRO") {
       addPeer(ip, {
        ws,
        username: data.username,
-       hostname: data.hostname,
       });
-
-      onMessage({ type: "USER_JOIN", username: data.username, ip });
+      addUser({ username: data.username, ip });
       return;
      }
-
      if (data.type === "CHAT") {
-      onMessage(data);
-
       for (const [, peer] of getPeers()) {
        peer.ws.send(JSON.stringify(data));
       }
      }
-
      if (data.type === "PRIVATE_CHAT") {
-      onMessage(data);
-     }
 
+     }
     } catch (e) {
      console.error("❌ MESSAGE ERROR:", e);
     }
    });
 
    ws.on("close", () => {
-    // console.log("❌ disconnected:", ip);
     const peer = getPeers().get(ip);
     removeUser(peer?.username)
     removePeer(ip);
-    onMessage({ type: "USER_LEAVE", ip });
    });
   });
 
@@ -66,16 +54,14 @@ export function startWSServer(username, onMessage) {
  }
 }
 
-export function connectToPeer(ip, username, hostname, onMessage) {
+export function connectToPeer(ip, username) {
  if (hasPeer(ip)) return;
  const ws = new WebSocket(`ws://${ip}:8080`);
  ws.on("open", () => {
-  addPeer(ip, { ws, username: "unknown", hostname: "unknown" });
-
+  addPeer(ip, { ws, username: "unknown" });
   ws.send(JSON.stringify({
    type: "INTRO",
-   username,
-   hostname
+   username
   }));
  });
 
@@ -109,7 +95,6 @@ export function sendPrivateMessage(toIp, username, message) {
  if (!peer) {
   clearFocus();
   createAlertBox("Selected User in Left.")
-  // console.log("Peer not found:", toIp);
   return;
  }
  const payload = JSON.stringify({

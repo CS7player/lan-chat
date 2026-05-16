@@ -63,7 +63,6 @@ export function startDiscovery(username, onUserFound) {
    const message = JSON.stringify({
     type: "DISCOVER",
     username,
-    hostname: os.hostname(),
     ip: net.address,
     port: 8080,
    });
@@ -84,13 +83,12 @@ export function startDiscovery(username, onUserFound) {
     onUserFound({
      ip: data.ip || rinfo.address,
      username: data.username,
-     hostname: data.hostname,
      port: data.port,
     });
    }
   } catch (err) {
    // ignore invalid packets
-   console.log(123,err);
+   console.log(123, err);
   }
  });
 }
