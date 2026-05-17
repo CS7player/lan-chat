@@ -69,11 +69,10 @@ const sendButton = blessed.button({
 /* -SEND MESSAGE HANDLER-*/
 const handleSend = () => {
  try {
-  // inputBox.cancel();
   const text = inputBox.getValue().trim();
+  inputBox.clearValue();
   if (!text) {
    clearFocus();
-   createAlertBox("NO Text is Entered!");
    return;
   }
   const user = chatState.selectedUser;
@@ -82,8 +81,8 @@ const handleSend = () => {
    createAlertBox("NO User is Selected!");
    return;
   }
-  sendMessage(user, text);
   inputBox.clearValue();
+  sendMessage(user, text);
  } catch (err) {
   console.log(err)
  }

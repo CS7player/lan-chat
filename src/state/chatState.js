@@ -1,4 +1,4 @@
-import * as os from "node:os";
+import * as os from "os";
 import { loadUsers } from "../tui/side-bar.js";
 import { renderMessage, renderContent } from "../tui/content.js";
 import { sendPrivateMessage } from "../network/websocket.js";
@@ -34,7 +34,10 @@ export function addMessage(user, msg) {
   chatState.messages[key] = [];
  }
  chatState.messages[key].push(msg);
- if (chatState.selectedUser.username == msg.from) {
+ if (chatState.selectedUser && chatState.selectedUser.username == msg.from) {
+  renderMessage(msg);
+ }
+ if (msg.from == "You") {
   renderMessage(msg);
  }
 }

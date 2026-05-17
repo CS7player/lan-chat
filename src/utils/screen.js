@@ -56,6 +56,9 @@ screen.key(['tab'], () => {
  if (!tabsfocus.istoggle) return;
  if (!tabsfocus.btns.length) return;
  tabsfocus.btnIndex = (tabsfocus.btnIndex + 1) % tabsfocus.btns.length;
+ if (tabsfocus.btnIndex == 0 && tabsfocus.btns.length > 5) {
+  tabsfocus.btnIndex = tabsfocus.btns.findIndex(b => b.id === 5);
+ }
  focusButton(tabsfocus.btnIndex);
 });
 

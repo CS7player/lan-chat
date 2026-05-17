@@ -1,6 +1,6 @@
 import blessed from 'blessed';
 import { screen, screenRefresh, addFocusBtn, removeFocusBtn, screenExit } from './screen.js';
-import { color } from './contants.js';
+import { color, tabsfocus } from './contants.js';
 
 const dialogBox = blessed.box({
  top: 'center',
@@ -73,6 +73,7 @@ noBtn.on('press', () => {
  dialogBox.hide();
  removeFocusBtn(5);
  removeFocusBtn(6);
+ tabsfocus.btnIndex = 0;
  screen.remove(dialogBox);
  disableModalMode();
  screenRefresh();
@@ -83,6 +84,7 @@ export function showDialogBox() {
  addFocusBtn({ id: 5, btn: okBtn })
  addFocusBtn({ id: 6, btn: noBtn })
  okBtn.focus();
+ tabsfocus.btnIndex = tabsfocus.btns.findIndex(b => b.id === 5);
  dialogBox.show();
  enableModalMode();
  dialogBox.focus();

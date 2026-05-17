@@ -1,9 +1,9 @@
+import { startUI } from "../tui/welcome.js";
 import WebSocket, { WebSocketServer } from "ws";
-import { addMessage, chatState, removeUser, addUser } from "../state/chatState.js";
-import { addPeer, removePeer, hasPeer, getPeers } from "./peers.js";
 import { createAlertBox } from "../tui/alert.js";
 import { clearFocus, screenExit } from "../utils/screen.js";
-import { startUI } from "../tui/welcome.js";
+import { addPeer, removePeer, hasPeer, getPeers } from "./peers.js";
+import { addMessage, chatState, removeUser, addUser } from "../state/chatState.js";
 
 export const startWSServer = (username) => {
  try {
