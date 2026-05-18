@@ -1,6 +1,6 @@
 {
  "name": "@cs7player/chat",
- "version": "1.0.2",
+ "version": "1.0.3",
  "description": "to communicate in terminal",
  "keywords": [
   "chat"

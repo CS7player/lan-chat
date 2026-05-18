@@ -14,6 +14,7 @@ export const startWSServer = (username) => {
   });
   wss.on("error", (err) => {
    console.error("WS failed:", err);
+   screenExit();
   });
   wss.on("connection", (ws, req) => {
    const ip = req.socket.remoteAddress;
