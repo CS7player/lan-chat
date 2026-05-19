@@ -8,13 +8,14 @@ export const screen = blessed.screen({
 })
 
 screen.key(['escape', 'C-c'], () => {
- screenExit();
+ screenExit("Thanks fOr uSinG !");
 });
 
 export const screenRefresh = () => { screen.render(); }
-export const screenExit = () => {
+export const screenExit = (text = "") => {
  try {
   screen.destroy();
+  console.log(text);
  } catch (e) { }
  process.stdout.write("\x1b[?25h"); // show cursor
  process.stdout.write("\x1b[0m");   // reset styles

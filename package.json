@@ -1,6 +1,6 @@
 {
  "name": "@cs7player/chat",
- "version": "1.0.3",
+ "version": "1.0.4",
  "description": "to communicate in terminal",
  "keywords": [
   "chat"
@@ -8,6 +8,7 @@
  "bin": {
   "lan-chat": "./app.js"
  },
+ "man": "./man/lan-chat.1",
  "license": "MIT",
  "author": {
   "name": "s.h.chandra sekhar",

@@ -90,7 +90,7 @@ yesBtn.on('press', () => {
 
 // NO event
 noBtn.on('press', () => {
- screenExit();
+ screenExit("Thanks for uSing!");
 });
 
 export const startUI = () => {

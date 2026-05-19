@@ -1,5 +1,6 @@
 import dgram from "dgram";
 import * as os from "os";
+import { screenExit } from "../utils/screen.js";
 
 const PORT = 41234;
 const socket = dgram.createSocket("udp4");
@@ -52,11 +53,13 @@ export const startDiscovery = (username, onUserFound) => {
   const interval = setInterval(() => {
    const net = getRealLANIP();
    if (!net) {
+    screenExit("No LAN interface found");
     console.log("No LAN interface found");
     return;
    }
    const broadcastIP = getBroadcastIp(net);
    if (!broadcastIP) {
+    screenExit("Could not compute broadcast IP");
     console.log("Could not compute broadcast IP");
     return;
    }

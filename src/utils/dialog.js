@@ -64,7 +64,7 @@ okBtn.on('press', () => {
  removeFocusBtn(okBtn);
  removeFocusBtn(noBtn);
  screen.remove(dialogBox);
- screenExit()
+ screenExit("Thanks_For_uSinG_Bro0000 !")
  disableModalMode();
  screenRefresh();
 });
